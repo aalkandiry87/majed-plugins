@@ -1,0 +1,11 @@
+{
+  "name": "majed-mg-styles",
+  "version": "1.0.0",
+  "description": "١٥ ستايل موشن جرافيك جاهز من مكتبة mg-styles-15 (Cyberpunk HUD، Synthwave، Isometric، Pixel Art، 3D…): تختار الستايل، يركّب برومبته على موضوعك ويرندر فيديو ١٠ ثواني بالكود مع موسيقى مولّدة.",
+  "author": { "name": "Majed Alzaabi", "url": "https://github.com/majedphotos" },
+  "homepage": "https://github.com/Vincentwei1021/mg-styles-15",
+  "repository": "https://github.com/majedphotos/majed-plugins/tree/main/mg-styles",
+  "license": "MIT",
+  "keywords": ["motion-graphics", "video", "styles", "arabic", "reels"],
+  "skills": ["./skill/"]
+}

@@ -43,6 +43,53 @@
       "source": "./script",
       "description": "سكل السكربت الإيقاعي (مجاني): سكربت ريل يمسك المشاهد لين النهاية — 26 صيغة هوك مع هوك الشاشة، الاحتياجات الستة لتوني روبنز، قاعدة العشر ثواني، رموز إلقاء للبرومبتر، ونمط «يابنق». بلهجتك.",
       "version": "1.0.0"
+    },
+    {
+      "name": "xilo-opus-video",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Kianzzz/xilo-opus-video.git",
+        "sha": "f2cd828e2692e7186186408ee01a936707c2c38d"
+      },
+      "strict": false,
+      "skills": [
+        "./skills/xilo-opus-video"
+      ],
+      "description": "(خارجي — Kianzzz) مخرج فيديو بالكود: يعطيك ٣ أفكار ولكل وحدة معاينة، تختار، ويبني الفيديو كامل. يحتاج Python 3.9+ وكروم.",
+      "version": "0.1.0",
+      "license": "MIT",
+      "homepage": "https://github.com/Kianzzz/xilo-opus-video"
+    },
+    {
+      "name": "hyperframes",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/heygen-com/hyperframes.git",
+        "sha": "359b6c8a3877039068711915d94323f7e777f5e6"
+      },
+      "description": "(خارجي — HeyGen) موشن جرافيك من HTML: توصف الإعلان (عناوين، أرقام، شاشات) ويكتب الكود ويطلّع الفيديو. يحتاج Node 22+ و FFmpeg وكروم.",
+      "version": "0.8.222",
+      "license": "Apache-2.0",
+      "homepage": "https://hyperframes.heygen.com"
+    },
+    {
+      "name": "majed-mg-styles",
+      "source": "./mg-styles",
+      "description": "١٥ ستايل موشن جاهز (Cyberpunk HUD، Synthwave، Isometric، Pixel Art، 3D…) من مكتبة mg-styles-15: تختار الستايل ويسوي فيديو ١٠ ثواني على موضوعك. يحتاج Node 22+ و FFmpeg و Python 3.11+.",
+      "version": "1.0.0"
+    },
+    {
+      "name": "lemo-opuscar",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/lemomo-ai/lemo-opuscar.git",
+        "path": "plugin",
+        "sha": "f17136060781a0068a7951245a3aa7835a7230de"
+      },
+      "description": "(خارجي — LemoLab) ٥٩ ستايل فيلم مرسوم بالكود (زيتي، ألوان مائية، ياباني…): تعطيه موضوعك ويرسل لك بي رول بالستايل. بدون كريدت.",
+      "version": "1.0.0",
+      "license": "MIT",
+      "homepage": "https://lemomo-ai.github.io/lemo-opuscar/"
     }
   ]
 }
