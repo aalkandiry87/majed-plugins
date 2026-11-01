@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>لوحة الفريق</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&display=swap">
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--ink:#1d1d1b;--mute:#6b6a66;--line:#e4e2dc;
+--work:#2f6fdb;--you:#d9480f;--dept:#8a5cd6;--stuck:#c92a2a;--free:#2b8a3e}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--card:#1f1f1d;--ink:#eceae4;--mute:#9a988f;--line:#33322f}}
+*{box-sizing:border-box}
+body{margin:0;font-family:"IBM Plex Sans Arabic",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+main{max-width:1000px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:22px;margin:0 0 4px}
+.sub{color:var(--mute);font-size:13px;margin-bottom:20px}
+h2{font-size:16px;margin:28px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.role{font-weight:600}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:99px;color:#fff;margin:6px 0}
+.task{font-size:14px}
+.note,.time{font-size:12px;color:var(--mute)}
+ul{list-style:none;margin:0;padding:0}
+li.card{margin-bottom:8px}
+.badge{font-size:11px;font-weight:600;border:1px solid var(--line);border-radius:6px;padding:0 6px;margin-inline-start:6px}
+a{color:var(--work)}
+.empty{color:var(--mute);font-size:14px}
+#state{font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+<h1>لوحة الفريق</h1>
+<div class="sub">المالك: علي الكندري · المدير التنفيذي: جلسة Claude Code · <span id="state">يحمّل…</span></div>
+
+<div class="grid" id="agents"></div>
+
+<h2>ينتظرك (needs)</h2>
+<ul id="needs"><li class="empty">لا شيء</li></ul>
+
+<h2>آخر التسليمات (recent)</h2>
+<ul id="recent"><li class="empty">لا شيء</li></ul>
+
+<h2>الأحداث (events)</h2>
+<ul id="events"><li class="empty">لا شيء</li></ul>
+</main>
+<script>
+const ROLES=[["researcher","الباحث"],["writer","الكاتب"],["editor","المونتير"],["publisher","الناشر"]];
+const COLORS={"يشتغل":"var(--work)","ينتظرك":"var(--you)","ينتظر قسم":"var(--dept)","متوقف":"var(--stuck)","فاضي":"var(--free)"};
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safeUrl=u=>/^https:\/\//.test(u||"")?u:"";
+const agents={};
+function renderAgents(){
+  document.getElementById("agents").innerHTML=ROLES.map(([id,name])=>{
+    const a=agents[id]||{status:"فاضي"};
+    const st=a.status||"فاضي";
+    return `<div class="card"><div class="role">${esc(a.name||name)}</div>
+      <span class="pill" style="background:${COLORS[st]||"var(--mute)"}">${esc(st)}</span>
+      ${a.task?`<div class="task">${esc(a.task)}</div>`:""}
+      ${a.note?`<div class="note">${esc(a.note)}</div>`:""}
+      ${a.waiting_on?`<div class="note">ينتظر: ${esc(a.waiting_on)}</div>`:""}
+      ${a.time?`<div class="time">${esc(a.time)}</div>`:""}</div>`}).join("");
+}
+function renderList(el,rows,fn){
+  const ul=document.getElementById(el);
+  ul.innerHTML=rows.length?rows.map(fn).join(""):'<li class="empty">لا شيء</li>';
+}
+const nameOf=id=>(ROLES.find(r=>r[0]===id)||[,id])[1];
+renderAgents();
+(async()=>{
+  const timer=setTimeout(()=>{document.getElementById("state").textContent="ما قدرت أحمّل اللوحة"},10000);
+  const db=await claude.use("db");
+  if(!db){clearTimeout(timer);document.getElementById("state").textContent="اللوحة تحتاج تسجيل دخول";return}
+  const ok=()=>{clearTimeout(timer);document.getElementById("state").textContent="مباشر"};
+  const err=()=>{clearTimeout(timer);document.getElementById("state").textContent="خطأ في القراءة"};
+  db.collection("agents").onSnapshot(s=>{ok();s.docs.forEach(d=>agents[d.id]=d.data());renderAgents()},err);
+  db.collection("needs").orderBy("ts","desc").limit(30).onSnapshot(s=>{ok();
+    renderList("needs",s.docs.map(d=>d.data()).filter(n=>n.open!==false),n=>`<li class="card"><div class="role">${esc(n.title)}<span class="badge">${esc(nameOf(n.from))}</span></div>
+      <div class="task">${esc(n.decision)}</div>${safeUrl(n.link)?`<a href="${esc(n.link)}">الرابط</a>`:""}<div class="time">${esc(n.time)}</div></li>`)},err);
+  db.collection("recent").orderBy("ts","desc").limit(20).onSnapshot(s=>{ok();
+    renderList("recent",s.docs.map(d=>d.data()),r=>`<li class="card"><div class="role">${esc(r.title)}<span class="badge">${esc(nameOf(r.from))}</span></div>
+      ${safeUrl(r.link)?`<a href="${esc(r.link)}">${esc(r.link_label||"الرابط")}</a>`:""}<div class="time">${esc(r.time)}</div></li>`)},err);
+  db.collection("events").orderBy("ts","desc").limit(30).onSnapshot(s=>{ok();
+    renderList("events",s.docs.map(d=>d.data()),e=>`<li class="card"><span class="badge">${esc(e.type)}</span> <b>${esc(nameOf(e.from))}</b> ← ${esc(e.to||"المدير")}
+      <div class="task">${esc(e.text)}</div><div class="time">${esc(e.time)}</div></li>`)},err);
+})();
+</script>
+</body>
+</html>
