@@ -34,6 +34,10 @@ a{color:var(--work)}
 <h1>لوحة الفريق</h1>
 <div class="sub">المالك: علي الكندري · المدير التنفيذي: جلسة Claude Code · <span id="state">يحمّل…</span></div>
 
+<h2>ملخص اليوم <span class="note" id="dayDate"></span></h2>
+<div class="card" id="day"><span class="empty">ما في ملخص لليوم بعد</span></div>
+
+<h2>الفريق</h2>
 <div class="grid" id="agents"></div>
 
 <h2>ينتظرك (needs)</h2>
@@ -74,6 +78,13 @@ renderAgents();
   if(!db){clearTimeout(timer);document.getElementById("state").textContent="اللوحة تحتاج تسجيل دخول";return}
   const ok=()=>{clearTimeout(timer);document.getElementById("state").textContent="مباشر"};
   const err=()=>{clearTimeout(timer);document.getElementById("state").textContent="خطأ في القراءة"};
+  db.collection("days").orderBy("ts","desc").limit(1).onSnapshot(s=>{ok();const d=s.docs[0];if(!d)return;const x=d.data();
+    document.getElementById("dayDate").textContent=d.id;
+    const li=a=>(a||[]).map(t=>`<li>${esc(t)}</li>`).join("");
+    document.getElementById("day").innerHTML=`<div class="role">وش لازم يسوي المالك اليوم</div><ol>${li(x.owner_todo)||"<li>لا شيء</li>"}</ol>
+      <div class="role">خطة الأقسام</div><ul>${(x.plans?ROLES.map(([id,n])=>x.plans[id]?`<li><b>${n}:</b> ${esc(x.plans[id])}</li>`:"").join(""):"")}</ul>
+      <div class="role">لو اليوم صعب</div><div class="task">${esc(x.fallback)}</div>
+      ${x.yesterday?`<div class="note">ختام أمس: ${esc(x.yesterday)}</div>`:""}<div class="time">${esc(x.time)}</div>`},err);
   db.collection("agents").onSnapshot(s=>{ok();s.docs.forEach(d=>agents[d.id]=d.data());renderAgents()},err);
   db.collection("needs").orderBy("ts","desc").limit(30).onSnapshot(s=>{ok();
     renderList("needs",s.docs.map(d=>d.data()).filter(n=>n.open!==false),n=>`<li class="card"><div class="role">${esc(n.title)}<span class="badge">${esc(nameOf(n.from))}</span></div>

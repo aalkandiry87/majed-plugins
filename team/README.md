@@ -32,7 +32,7 @@ _(لا يوجد بعد)_
 
 ## بروتوكول اللوحة
 اللوحة: https://claude.ai/artifact/Y3jDsZrhxSZfQNSV13MKWU
-قاعدة بياناتها (slug: `fb6cce62-4ccf-4e1e-a789-80c9d9fea0f5`) فيها أربع مجموعات: `agents/<الدور>` و`needs` و`recent` و`events`. أسماء الأدوار: researcher، writer، editor، publisher.
+قاعدة بياناتها (slug: `fb6cce62-4ccf-4e1e-a789-80c9d9fea0f5`) فيها خمس مجموعات: `agents/<الدور>` و`needs` و`recent` و`events` و`days`. أسماء الأدوار: researcher، writer، editor، publisher.
 
 - تبدأ مهمة: حالتك «يشتغل» + اسم المهمة + جملة قصيرة.
 - تحتاج المالك: حالتك «ينتظرك» + بطاقة في needs.
@@ -49,4 +49,14 @@ _(لا يوجد بعد)_
 - `recent/<id>`: `{from, title, link, link_label, time, ts}`
 - `events/<id>`: `{type: "report" | "stuck", from, to: "المدير", text, time, ts}`
 
+- `days/<YYYY-MM-DD>`: `{owner_todo: [≤3], plans: {researcher, writer, editor, publisher}, fallback, yesterday, time, ts}`. يكتبه المدير بس.
+
 `ts` رقم بالثواني (Unix) للترتيب بس. اللي ينعرض هو `time`.
+
+## ملخص الصباح (المدير، كل يوم 8:00 ص بتوقيت الكويت)
+1. يقرأ اللوحة: المهام، واللي ينتظر المالك (needs)، وختام أمس (events وrecent من أمس).
+2. يكتب `days/<تاريخ اليوم>` وفيه:
+   - وش لازم يسوي المالك اليوم (3 أشياء بالكثير)
+   - خطة كل قسم بسطر واحد
+   - خطة بديلة ليوم صعب
+3. ممنوع: النشر، الإرسال، الدفع، أو تغيير أي إعداد.
