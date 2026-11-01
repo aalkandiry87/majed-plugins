@@ -29,6 +29,10 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
 #end .title em{font-style:normal;color:#1B1411}
 #end .ep{font-family:"Inter",sans-serif;font-weight:700;font-size:40px;letter-spacing:.2em;direction:ltr}
 #end .cta{font-family:"Readex";font-weight:500;font-size:38px;opacity:.95}
+#end.work{background:radial-gradient(120% 70% at 50% 35%,#2A201B 0%,#1B1411 70%);color:#F4EBDD}
+#end.work .series{background:#17657A;color:#F4EBDD} #end.work .title em{color:#E3622D} #end.work .mk i{border-color:#E3622D} #end.work .mk span{color:#F4EBDD}
+#end.coffee{background:#F4EBDD;color:#1B1411}
+#end.coffee .series{background:#8A5A3C;color:#F4EBDD} #end.coffee .title em{color:#8A5A3C} #end.coffee .mk i{border-color:#8A5A3C} #end.coffee .mk span{color:#1B1411}
 #end .name{position:absolute;bottom:430px;left:0;right:0;text-align:center;font-family:"Readex";font-weight:600;font-size:34px;letter-spacing:.04em;opacity:.85}
 #bar{position:absolute;top:0;right:0;height:8px}
 </style>
@@ -56,6 +60,7 @@ for(let i=0;i<(S.fx==='rain'?140:S.fx==='stars'?160:60);i++) parts.push({x:R()*1
 document.getElementById('tag').textContent = S.tag || '';
 document.getElementById('tag').style.color = P.muted;
 const end = document.getElementById('end');
+end.className = S.end.theme || 'khair';
 end.querySelector('.series').textContent = S.end.series;
 const tt = end.querySelector('.title'); tt.textContent = S.end.title[0]; tt.appendChild(document.createElement('br')); const em=document.createElement('em'); em.textContent=S.end.title[1]; tt.appendChild(em);
 end.querySelector('.ep').textContent = S.end.ep || '';
@@ -129,7 +134,15 @@ window.renderAt = function(t){
   end.style.opacity = e; end.style.transform = `scale(${0.96+0.04*e})`;
   document.getElementById('tag').style.opacity = 1-e;
 };
-document.fonts.ready.then(()=>{ window.READY = true; });
+
+// auto-fit: every line stays on one row; end title stays on two rows
+function fitAll(){
+  document.querySelectorAll('.line').forEach(d=>{ const host=d.parentElement; const prev=host.style.opacity; host.style.opacity=1;
+    let fs=parseFloat(d.style.fontSize); while(d.getBoundingClientRect().height > fs*1.45 && fs>56){ fs-=4; d.style.fontSize=fs+'px'; } host.style.opacity=prev; });
+  const t=document.querySelector('#end .title'); let fs=150; while(t.getBoundingClientRect().height > fs*1.2*2+4 && fs>80){ fs-=6; t.style.fontSize=fs+'px'; }
+}
+document.fonts.ready.then(()=>{ fitAll(); window.READY = true; });
+
 </script>
 </body>
 </html>
