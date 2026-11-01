@@ -5,6 +5,8 @@
 <style>
 @font-face{font-family:"Tajawal";src:url("fonts/Tajawal-Bold.ttf");font-weight:700}
 @font-face{font-family:"Tajawal";src:url("fonts/Tajawal-Regular.ttf");font-weight:400}
+@font-face{font-family:"Inter";src:url("fonts/Inter-VF.ttf");font-weight:100 900}
+@font-face{font-family:"Ruqaa";src:url("fonts/ArefRuqaa-Bold.ttf")}
 @font-face{font-family:"Readex";src:url("fonts/ReadexPro-VF.ttf");font-weight:200 700}
 html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
 #bg{position:absolute;inset:0}
@@ -13,11 +15,21 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
 .line.small{font-family:"Readex";font-weight:400}
 .w{display:inline-block}
 #tag{position:absolute;top:150px;left:0;right:0;text-align:center;font-family:"Readex";font-weight:500;font-size:34px;letter-spacing:.5px}
-#end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;opacity:0;padding-bottom:200px}
-#end .series{font-family:"Tajawal";font-weight:700;font-size:128px}
-#end .name{font-family:"Readex";font-weight:600;font-size:52px}
-#end .work{font-family:"Readex";font-weight:400;font-size:38px;opacity:.85;max-width:820px;text-align:center;line-height:1.5}
-#end .cta{font-family:"Readex";font-weight:600;font-size:40px;padding:18px 40px;border-radius:999px}
+#end{position:absolute;inset:0;opacity:0;background:radial-gradient(120% 70% at 50% 35%,#F08A4E 0%,#E3622D 55%,#C9471C 100%);color:#FFF8EE}
+#end .zone{position:absolute;left:0;right:0;top:240px;height:1440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;padding:0 120px;box-sizing:border-box;text-align:center}
+#end .mk{position:relative;width:150px;height:150px;display:grid;place-items:center}
+#end .mk i{position:absolute;width:36px;height:36px;border:0 solid #1B1411}
+#end .mk i:nth-child(1){top:0;right:0;border-top-width:8px;border-right-width:8px}
+#end .mk i:nth-child(2){top:0;left:0;border-top-width:8px;border-left-width:8px}
+#end .mk i:nth-child(3){bottom:0;right:0;border-bottom-width:8px;border-right-width:8px}
+#end .mk i:nth-child(4){bottom:0;left:0;border-bottom-width:8px;border-left-width:8px}
+#end .mk span{font-family:"Ruqaa";font-size:70px;line-height:1;transform:translateY(-22%);color:#FFF8EE}
+#end .series{font-family:"Readex";font-weight:600;font-size:44px;padding:14px 38px;border-radius:999px;background:#1B1411;color:#FFF8EE}
+#end .title{font-family:"Tajawal";font-weight:700;font-size:150px;line-height:1.15}
+#end .title em{font-style:normal;color:#1B1411}
+#end .ep{font-family:"Inter",sans-serif;font-weight:700;font-size:40px;letter-spacing:.2em;direction:ltr}
+#end .cta{font-family:"Readex";font-weight:500;font-size:38px;opacity:.95}
+#end .name{position:absolute;bottom:430px;left:0;right:0;text-align:center;font-family:"Readex";font-weight:600;font-size:34px;letter-spacing:.04em;opacity:.85}
 #bar{position:absolute;top:0;right:0;height:8px}
 </style>
 </head>
@@ -26,7 +38,7 @@ html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
 <div id="bar"></div>
 <div id="tag"></div>
 <div id="stage"></div>
-<div id="end"><div class="series"></div><div class="name"></div><div class="work"></div><div class="cta"></div></div>
+<div id="end"><div class="zone"><div class="mk"><i></i><i></i><i></i><i></i><span>ع</span></div><div class="series"></div><div class="title"></div><div class="ep"></div><div class="cta"></div></div><div class="name"></div></div>
 <script>
 // Deterministic renderer: window.renderAt(t) draws the frame at time t (seconds).
 const S = window.SPEC;
@@ -44,10 +56,11 @@ for(let i=0;i<(S.fx==='rain'?140:S.fx==='stars'?160:60);i++) parts.push({x:R()*1
 document.getElementById('tag').textContent = S.tag || '';
 document.getElementById('tag').style.color = P.muted;
 const end = document.getElementById('end');
-end.querySelector('.series').textContent = S.end.series; end.querySelector('.series').style.color = P.accent;
-end.querySelector('.name').textContent = S.end.name; end.querySelector('.name').style.color = P.ink;
-end.querySelector('.work').textContent = S.end.work; end.querySelector('.work').style.color = P.ink;
-const cta = end.querySelector('.cta'); cta.textContent = S.end.cta; cta.style.background = P.accent; cta.style.color = P.onAccent;
+end.querySelector('.series').textContent = S.end.series;
+const tt = end.querySelector('.title'); tt.textContent = S.end.title[0]; tt.appendChild(document.createElement('br')); const em=document.createElement('em'); em.textContent=S.end.title[1]; tt.appendChild(em);
+end.querySelector('.ep').textContent = S.end.ep || '';
+end.querySelector('.cta').textContent = S.end.cta;
+end.querySelector('.name').textContent = S.end.name;
 document.getElementById('bar').style.background = P.accent;
 
 // build scenes

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:"Tajawal";src:url("Tajawal-Bold.ttf");font-weight:700}
+@font-face{font-family:"Tajawal";src:url("Tajawal-Regular.ttf");font-weight:400}
+@font-face{font-family:"Readex";src:url("ReadexPro-VF.ttf");font-weight:200 700}
+@font-face{font-family:"Ruqaa";src:url("ArefRuqaa-Bold.ttf")}
+@font-face{font-family:"Kufi";src:url("NotoKufiArabic-VF.ttf");font-weight:100 900}
+@font-face{font-family:"Inter";src:url("Inter-VF.ttf");font-weight:100 900}
+:root{--esp:#1B1411;--sand:#F4EBDD;--latte:#C9A27E;--sun:#E3622D;--gulf:#17657A;--coffee:#8A5A3C}
+body{margin:0;background:#888;display:flex;flex-wrap:wrap;gap:40px;padding:40px;align-items:flex-start}
+.k{position:relative;overflow:hidden;flex:none}
+/* viewfinder mark */
+.vf{position:absolute;inset:0}
+.vf i{position:absolute;width:24%;height:24%;border-color:var(--c,var(--sun));border-style:solid;border-width:0}
+.vf i:nth-child(1){top:0;right:0;border-top-width:var(--w,10px);border-right-width:var(--w,10px)}
+.vf i:nth-child(2){top:0;left:0;border-top-width:var(--w,10px);border-left-width:var(--w,10px)}
+.vf i:nth-child(3){bottom:0;right:0;border-bottom-width:var(--w,10px);border-right-width:var(--w,10px)}
+.vf i:nth-child(4){bottom:0;left:0;border-bottom-width:var(--w,10px);border-left-width:var(--w,10px)}
+.mark{display:grid;place-items:center}
+.mark .ain{font-family:"Ruqaa";font-weight:700;line-height:1;transform:translateY(var(--dy,-22%))}
+.rec{position:absolute;border-radius:50%;background:var(--sun)}
+/* logos */
+#logo-light,#logo-dark{width:1024px;height:1024px;background:var(--sand)}
+#logo-dark{background:var(--esp)}
+#logo-light .m,#logo-dark .m{position:absolute;inset:170px;--w:34px}
+#logo-light .ain{font-size:440px;color:var(--esp)}
+#logo-dark .ain{font-size:440px;color:var(--sand)}
+#wordmark{width:1800px;height:600px;background:var(--sand);display:flex;align-items:center;gap:80px;padding:0 120px;box-sizing:border-box}
+#wordmark .m{position:relative;width:300px;height:300px;flex:none;--w:16px}
+#wordmark .ain{font-size:150px;color:var(--esp)}
+#wordmark .ar{font-family:"Tajawal";font-weight:700;font-size:190px;color:var(--esp);line-height:1}
+#wordmark .en{font-family:"Inter";font-weight:600;font-size:40px;letter-spacing:.12em;white-space:nowrap;color:var(--esp);margin-top:24px;direction:ltr;text-align:right}
+#wordmark .en b{color:var(--sun);font-weight:700}
+/* reel covers */
+.cover{width:1080px;height:1920px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.cover .zone{position:absolute;left:0;right:0;top:240px;height:1440px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;padding:0 120px;box-sizing:border-box}
+.cover .badge{font-family:"Readex";font-weight:600;font-size:44px;padding:14px 38px;border-radius:999px}
+.cover .title{font-family:"Tajawal";font-weight:700;font-size:150px;line-height:1.15}
+.cover .ep{font-family:"Inter";font-weight:700;font-size:40px;letter-spacing:.2em;direction:ltr}
+.cover .m{position:relative;width:150px;height:150px;--w:8px}
+.cover .m .ain{font-size:70px}
+.cover .foot{position:absolute;bottom:430px;left:0;right:0;text-align:center;font-family:"Inter";font-weight:600;font-size:30px;letter-spacing:.2em;direction:ltr;opacity:.7}
+#cover-work{background:var(--esp);color:var(--sand)}
+#cover-work .badge{background:var(--gulf);color:var(--sand)}
+#cover-work .title em{color:var(--sun);font-style:normal}
+#cover-coffee{background:var(--sand);color:var(--esp)}
+#cover-coffee .badge{background:var(--coffee);color:var(--sand)}
+#cover-coffee .title em{color:var(--coffee);font-style:normal}
+#cover-khair{background:radial-gradient(120% 70% at 50% 35%,#F08A4E 0%,var(--sun) 55%,#C9471C 100%);color:#FFF8EE}
+#cover-khair .badge{background:var(--esp);color:#FFF8EE}
+#cover-khair .title em{color:var(--esp);font-style:normal}
+/* highlights */
+.hl{width:1080px;height:1080px;border-radius:50%;display:grid;place-items:center}
+.hl svg{width:420px;height:420px}
+.hl .cap{position:absolute;bottom:200px;left:0;right:0;text-align:center;font-family:"Tajawal";font-weight:700;font-size:96px}
+.hl-sand{background:var(--sand);color:var(--esp)}
+.hl-esp{background:var(--esp);color:var(--sand)}
+/* grid */
+#grid{width:1080px;height:1440px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#fff}
+#grid .cell{overflow:hidden;position:relative}
+#grid .cell > div{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.3333)}
+/* palette */
+#palette{width:1800px;height:640px;display:flex}
+#palette div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:40px;font-family:"Readex";font-size:34px}
+#palette b{font-family:"Inter";font-size:44px;display:block;direction:ltr;text-align:right}
+</style>
+</head>
+<body>
+<template id="markT"><div class="m mark"><div class="vf"><i></i><i></i><i></i><i></i></div><span class="ain">ع</span></div></template>
+
+<div id="logo-light" class="k"></div>
+<div id="logo-dark" class="k"></div>
+<div id="wordmark" class="k"><div class="m mark"><div class="vf"><i></i><i></i><i></i><i></i></div><span class="ain">ع</span></div>
+  <div><div class="ar">علي الكندري</div><div class="en">ALI ALKANDIRY · <b>AI COMMERCIAL CREATOR</b></div></div></div>
+
+<div id="palette" class="k">
+  <div style="background:#1B1411;color:#F4EBDD">إسبريسو<b>#1B1411</b></div>
+  <div style="background:#F4EBDD;color:#1B1411">رمل<b>#F4EBDD</b></div>
+  <div style="background:#C9A27E;color:#1B1411">لاتيه<b>#C9A27E</b></div>
+  <div style="background:#E3622D;color:#1B1411">غروب<b>#E3622D</b></div>
+  <div style="background:#17657A;color:#F4EBDD">خليج<b>#17657A</b></div>
+</div>
+
+<div id="cover-work" class="k cover"><div class="zone"><div class="m mark" style="--c:#E3622D"><div class="vf"><i></i><i></i><i></i><i></i></div><span class="ain" style="color:#F4EBDD">ع</span></div>
+  <div class="badge">شغلي</div><div class="title">من صورة جوال<br><em>لإعلان سينمائي</em></div></div><div class="foot">ALI ALKANDIRY</div></div>
+<div id="cover-coffee" class="k cover"><div class="zone"><div class="m mark" style="--c:#8A5A3C"><div class="vf"><i></i><i></i><i></i><i></i></div><span class="ain">ع</span></div>
+  <div class="badge">قهوة وفكرة</div><div class="title">قاعدة<br><em>الدقيقتين</em></div><div class="ep">EP. 08</div></div><div class="foot">ALI ALKANDIRY</div></div>
+<div id="cover-khair" class="k cover"><div class="zone"><div class="m mark" style="--c:#1B1411"><div class="vf"><i></i><i></i><i></i><i></i></div><span class="ain" style="color:#FFF8EE">ع</span></div>
+  <div class="badge">الخير ياي</div><div class="title">الجو<br><em>بدأ يبرد</em></div><div class="ep">01</div></div><div class="foot">ALI ALKANDIRY</div></div>
+
+<div id="hl-work" class="k hl hl-esp"><svg viewBox="0 0 100 100"><g fill="none" stroke="#E3622D" stroke-width="6" stroke-linecap="square"><path d="M8 26V8h18M74 8h18v18M92 74v18H74M26 92H8V74"/></g><path d="M40 33l30 17-30 17z" fill="#F4EBDD"/></svg><div class="cap">شغلي</div></div>
+<div id="hl-coffee" class="k hl hl-sand"><svg viewBox="0 0 100 100"><g fill="none" stroke="#1B1411" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 42h46v16a20 20 0 0 1-20 20h-6a20 20 0 0 1-20-20z"/><path d="M68 48h6a9 9 0 0 1 0 18h-7"/><path d="M38 18c-4 6 4 9 0 15M52 18c-4 6 4 9 0 15" stroke="#8A5A3C"/></g></svg><div class="cap">قهوة وفكرة</div></div>
+<div id="hl-khair" class="k hl" style="background:#E3622D;color:#FFF8EE"><svg viewBox="0 0 100 100"><circle cx="50" cy="56" r="17" fill="#FFF8EE"/><g stroke="#FFF8EE" stroke-width="6" stroke-linecap="round"><path d="M50 22v-8M24 32l-6-6M76 32l6-6M16 56H8M92 56h-8"/></g><path d="M10 84h80" stroke="#1B1411" stroke-width="6" stroke-linecap="round"/></svg><div class="cap">الخير ياي</div></div>
+<div id="hl-price" class="k hl hl-sand"><svg viewBox="0 0 100 100"><g fill="none" stroke="#1B1411" stroke-width="6" stroke-linejoin="round"><path d="M14 50L50 14h36v36L50 86z"/></g><circle cx="70" cy="30" r="7" fill="#E3622D"/></svg><div class="cap">الأسعار</div></div>
+<div id="hl-dm" class="k hl hl-esp"><svg viewBox="0 0 100 100"><path d="M14 22h72v46H44L26 84V68H14z" fill="none" stroke="#F4EBDD" stroke-width="6" stroke-linejoin="round"/><circle cx="34" cy="45" r="5" fill="#E3622D"/><circle cx="50" cy="45" r="5" fill="#E3622D"/><circle cx="66" cy="45" r="5" fill="#E3622D"/></svg><div class="cap">تواصل</div></div>
+
+<div id="grid" class="k"></div>
+
+<script>
+document.querySelectorAll('#logo-light,#logo-dark').forEach(el=>el.appendChild(document.getElementById('markT').content.cloneNode(true)));
+document.querySelector('#logo-dark').style.setProperty('--c','#E3622D');
+// grid preview: covers cropped to 3:4, newest top-right (RTL reading of the grid is LTR on IG; keep IG order)
+const order=['cover-khair','cover-work','cover-coffee','cover-coffee','cover-khair','cover-work','cover-work','cover-coffee','cover-khair'];
+const g=document.getElementById('grid');
+order.forEach(id=>{const c=document.createElement('div');c.className='cell';const k=document.getElementById(id).cloneNode(true);k.removeAttribute('id');k.id='';
+  k.className=document.getElementById(id).className; k.setAttribute('style', (document.getElementById(id).getAttribute('style')||''));
+  const wrap=document.createElement('div'); wrap.appendChild(k);
+  // reuse id-based styles via data attribute class
+  k.classList.add('as-'+id); c.appendChild(wrap); g.appendChild(c);});
+document.fonts.ready.then(()=>window.READY=true);
+</script>
+<style>
+.as-cover-work{background:var(--esp);color:var(--sand)} .as-cover-work .badge{background:var(--gulf);color:var(--sand)} .as-cover-work .title em{color:var(--sun);font-style:normal}
+.as-cover-coffee{background:var(--sand);color:var(--esp)} .as-cover-coffee .badge{background:var(--coffee);color:var(--sand)} .as-cover-coffee .title em{color:var(--coffee);font-style:normal}
+.as-cover-khair{background:radial-gradient(120% 70% at 50% 35%,#F08A4E 0%,var(--sun) 55%,#C9471C 100%);color:#FFF8EE} .as-cover-khair .badge{background:var(--esp);color:#FFF8EE} .as-cover-khair .title em{color:var(--esp);font-style:normal}
+</style>
+</body>
+</html>
