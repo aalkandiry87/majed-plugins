@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:"Tajawal";src:url("fonts/Tajawal-Bold.ttf");font-weight:700}
+@font-face{font-family:"Tajawal";src:url("fonts/Tajawal-Regular.ttf");font-weight:400}
+@font-face{font-family:"Readex";src:url("fonts/ReadexPro-VF.ttf");font-weight:200 700}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#000}
+#bg{position:absolute;inset:0}
+#stage{position:absolute;left:90px;right:150px;top:330px;bottom:520px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.line{font-family:"Tajawal";font-weight:700;line-height:1.25;display:flex;flex-wrap:wrap;justify-content:center;gap:0 .28em;will-change:transform,opacity}
+.line.small{font-family:"Readex";font-weight:400}
+.w{display:inline-block}
+#tag{position:absolute;top:150px;left:0;right:0;text-align:center;font-family:"Readex";font-weight:500;font-size:34px;letter-spacing:.5px}
+#end{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;opacity:0;padding-bottom:200px}
+#end .series{font-family:"Tajawal";font-weight:700;font-size:128px}
+#end .name{font-family:"Readex";font-weight:600;font-size:52px}
+#end .work{font-family:"Readex";font-weight:400;font-size:38px;opacity:.85;max-width:820px;text-align:center;line-height:1.5}
+#end .cta{font-family:"Readex";font-weight:600;font-size:40px;padding:18px 40px;border-radius:999px}
+#bar{position:absolute;top:0;right:0;height:8px}
+</style>
+</head>
+<body>
+<canvas id="bg" width="1080" height="1920"></canvas>
+<div id="bar"></div>
+<div id="tag"></div>
+<div id="stage"></div>
+<div id="end"><div class="series"></div><div class="name"></div><div class="work"></div><div class="cta"></div></div>
+<script>
+// Deterministic renderer: window.renderAt(t) draws the frame at time t (seconds).
+const S = window.SPEC;
+const P = S.palette;
+const cv = document.getElementById('bg'), cx = cv.getContext('2d');
+const stage = document.getElementById('stage');
+const ease = x => x<0?0:x>1?1:1-Math.pow(1-x,3);
+const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+function rnd(seed){ let s=seed>>>0||1; return ()=>((s=Math.imul(s^s>>>15,1|s)+0x6D2B79F5|0,(s>>>0)%100000)/100000); }
+
+// particles
+const R = rnd(S.seed||7); const parts = [];
+for(let i=0;i<(S.fx==='rain'?140:S.fx==='stars'?160:60);i++) parts.push({x:R()*1080,y:R()*1920,s:R(),p:R()*6.28});
+
+document.getElementById('tag').textContent = S.tag || '';
+document.getElementById('tag').style.color = P.muted;
+const end = document.getElementById('end');
+end.querySelector('.series').textContent = S.end.series; end.querySelector('.series').style.color = P.accent;
+end.querySelector('.name').textContent = S.end.name; end.querySelector('.name').style.color = P.ink;
+end.querySelector('.work').textContent = S.end.work; end.querySelector('.work').style.color = P.ink;
+const cta = end.querySelector('.cta'); cta.textContent = S.end.cta; cta.style.background = P.accent; cta.style.color = P.onAccent;
+document.getElementById('bar').style.background = P.accent;
+
+// build scenes
+let t0 = 0;
+const scenes = S.scenes.map(sc=>{
+  const el = document.createElement('div'); el.style.position='absolute'; el.style.inset='0';
+  el.style.display='flex'; el.style.flexDirection='column'; el.style.justifyContent='center'; el.style.alignItems='center'; el.style.gap='18px';
+  const words = [];
+  sc.lines.forEach((ln,i)=>{
+    const d = document.createElement('div'); d.className='line'+(ln.small?' small':'');
+    d.style.fontSize = (ln.size||96)+'px'; d.style.color = ln.accent?P.accent:(ln.small?P.muted:P.ink);
+    ln.text.split(' ').forEach(w=>{ const s=document.createElement('span'); s.className='w'; s.textContent=w; d.appendChild(s); words.push(s); });
+    el.appendChild(d);
+  });
+  stage.appendChild(el);
+  const o = {el,words,start:t0,dur:sc.dur};
+  t0 += sc.dur; return o;
+});
+const END_START = t0; const TOTAL = t0 + S.end.dur;
+window.TOTAL = TOTAL;
+
+function drawBg(t){
+  const g = cx.createLinearGradient(0,0,0,1920);
+  const shift = Math.sin(t*0.25)*0.06;
+  g.addColorStop(0,P.bg[0]); g.addColorStop(clamp(0.55+shift,0,1),P.bg[1]); g.addColorStop(1,P.bg[2]);
+  cx.fillStyle=g; cx.fillRect(0,0,1080,1920);
+  // soft glow
+  const gx = 540+Math.sin(t*0.3)*120, gy = S.fx==='stars'?1750:520+Math.cos(t*0.2)*80;
+  const rg = cx.createRadialGradient(gx,gy,0,gx,gy,900);
+  rg.addColorStop(0,P.glow); rg.addColorStop(1,'rgba(0,0,0,0)');
+  cx.fillStyle=rg; cx.fillRect(0,0,1080,1920);
+  if(S.fx==='rain'){
+    cx.strokeStyle=P.fxColor; cx.lineCap='round';
+    parts.forEach(p=>{ const sp=900+p.s*700; const y=((p.y+t*sp)%2100)-100; const x=p.x-(t*sp*0.08)%1080;
+      cx.globalAlpha=0.18+p.s*0.35; cx.lineWidth=1.5+p.s*2; cx.beginPath(); cx.moveTo((x+1080)%1080,y); cx.lineTo((x+1080)%1080-6,y+28+p.s*30); cx.stroke(); });
+    cx.globalAlpha=1;
+  } else if(S.fx==='stars'){
+    parts.forEach(p=>{ if(p.y>1500) return; const tw=0.35+0.65*Math.abs(Math.sin(t*(0.6+p.s)+p.p));
+      cx.globalAlpha=tw*(0.4+p.s*0.6); cx.fillStyle=P.fxColor; cx.beginPath(); cx.arc(p.x,p.y,1+p.s*2.6,0,6.28); cx.fill(); });
+    cx.globalAlpha=1;
+    // dune silhouette
+    cx.fillStyle=P.dune; cx.beginPath(); cx.moveTo(0,1920); cx.lineTo(0,1640);
+    for(let x=0;x<=1080;x+=20) cx.lineTo(x,1640-Math.sin(x/260+0.8)*70-Math.sin(x/120)*18); cx.lineTo(1080,1920); cx.fill();
+  } else { // leaves / breeze
+    parts.forEach(p=>{ const x=(p.x - t*(40+p.s*60) + 2000)%1180-50; const y=p.y+Math.sin(t*0.8+p.p)*40;
+      cx.globalAlpha=0.12+p.s*0.25; cx.fillStyle=P.fxColor; cx.save(); cx.translate(x,y); cx.rotate(t*0.5+p.p);
+      cx.beginPath(); cx.ellipse(0,0,10+p.s*14,4+p.s*6,0,0,6.28); cx.fill(); cx.restore(); });
+    cx.globalAlpha=1;
+  }
+}
+
+window.renderAt = function(t){
+  drawBg(t);
+  document.getElementById('bar').style.width = (clamp(t/TOTAL,0,1)*1080)+'px';
+  scenes.forEach((sc)=>{
+    const lt = t - sc.start;
+    if(lt < -0.01 || lt > sc.dur + 0.4){ sc.el.style.opacity=0; return; }
+    const out = ease((lt-(sc.dur-0.35))/0.35);
+    sc.el.style.opacity = 1-out;
+    sc.el.style.transform = `translateY(${-out*40}px) scale(${1+ (lt/sc.dur)*0.04})`;
+    sc.el.style.filter = out>0?`blur(${out*8}px)`:'none';
+    sc.words.forEach((w,i)=>{ const k = ease((lt-0.08-i*0.11)/0.38);
+      w.style.opacity=k; w.style.transform=`translateY(${(1-k)*36}px)`; });
+  });
+  const e = ease((t-END_START)/0.6);
+  end.style.opacity = e; end.style.transform = `scale(${0.96+0.04*e})`;
+  document.getElementById('tag').style.opacity = 1-e;
+};
+document.fonts.ready.then(()=>{ window.READY = true; });
+</script>
+</body>
+</html>
