@@ -1,0 +1,118 @@
+{
+ "mood": "night",
+ "fx": "leaves",
+ "seed": 71,
+ "tag": "شغلي",
+ "palette": {
+  "bg": [
+   "#1B1411",
+   "#241B17",
+   "#3A2A22"
+  ],
+  "glow": "rgba(227,98,45,0.28)",
+  "ink": "#F4EBDD",
+  "muted": "#C9A27E",
+  "accent": "#E3622D",
+  "onAccent": "#1B1411",
+  "fxColor": "#C9A27E"
+ },
+ "scenes": [
+  {
+   "dur": 2.6,
+   "lines": [
+    {
+     "text": "منافسك ينزل محتوى",
+     "size": 92,
+     "accent": false,
+     "small": false
+    },
+    {
+     "text": "والناس تشوفه قبلك",
+     "size": 84,
+     "accent": true,
+     "small": false
+    }
+   ]
+  },
+  {
+   "dur": 2.2,
+   "lines": [
+    {
+     "text": "وانت؟",
+     "size": 150,
+     "accent": true,
+     "small": false
+    },
+    {
+     "text": "مشغول بشغلك",
+     "size": 80,
+     "accent": false,
+     "small": true
+    }
+   ]
+  },
+  {
+   "dur": 2.8,
+   "lines": [
+    {
+     "text": "خلني أجهّز لك",
+     "size": 96,
+     "accent": false,
+     "small": false
+    },
+    {
+     "text": "الفكرة والتصوير والإعلان",
+     "size": 76,
+     "accent": false,
+     "small": true
+    }
+   ]
+  },
+  {
+   "dur": 2.6,
+   "lines": [
+    {
+     "text": "وانت ركّز",
+     "size": 100,
+     "accent": false,
+     "small": false
+    },
+    {
+     "text": "على مشروعك",
+     "size": 100,
+     "accent": true,
+     "small": false
+    }
+   ]
+  },
+  {
+   "dur": 2.6,
+   "lines": [
+    {
+     "text": "أرسل «جاهز»",
+     "size": 110,
+     "accent": true,
+     "small": false
+    },
+    {
+     "text": "بالخاص",
+     "size": 84,
+     "accent": false,
+     "small": true
+    }
+   ]
+  }
+ ],
+ "end": {
+  "theme": "work",
+  "series": "شغلي",
+  "title": [
+   "خلك",
+   "قدّامهم"
+  ],
+  "ep": "",
+  "cta": "أرسل «جاهز» بالخاص",
+  "name": "علي الكندري · ALI ALKANDIRY",
+  "dur": 3.6
+ }
+}

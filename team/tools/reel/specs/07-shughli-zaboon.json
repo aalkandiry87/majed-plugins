@@ -1,0 +1,106 @@
+{
+ "mood": "night",
+ "fx": "leaves",
+ "seed": 83,
+ "tag": "شغلي",
+ "palette": {
+  "bg": [
+   "#1B1411",
+   "#241B17",
+   "#3A2A22"
+  ],
+  "glow": "rgba(227,98,45,0.28)",
+  "ink": "#F4EBDD",
+  "muted": "#C9A27E",
+  "accent": "#E3622D",
+  "onAccent": "#1B1411",
+  "fxColor": "#C9A27E"
+ },
+ "scenes": [
+  {
+   "dur": 2.8,
+   "lines": [
+    {
+     "text": "لو انت زبون…",
+     "size": 80,
+     "accent": false,
+     "small": true
+    },
+    {
+     "text": "بتوقف عند إعلانك؟",
+     "size": 92,
+     "accent": false,
+     "small": false
+    }
+   ]
+  },
+  {
+   "dur": 2.2,
+   "lines": [
+    {
+     "text": "أول لقطة تشد؟",
+     "size": 104,
+     "accent": false,
+     "small": false
+    }
+   ]
+  },
+  {
+   "dur": 2.2,
+   "lines": [
+    {
+     "text": "الصورة واضحة؟",
+     "size": 104,
+     "accent": false,
+     "small": false
+    }
+   ]
+  },
+  {
+   "dur": 2.6,
+   "lines": [
+    {
+     "text": "الناس تفهم",
+     "size": 100,
+     "accent": false,
+     "small": false
+    },
+    {
+     "text": "شنو تبيع؟",
+     "size": 110,
+     "accent": true,
+     "small": false
+    }
+   ]
+  },
+  {
+   "dur": 2.8,
+   "lines": [
+    {
+     "text": "إذا وحدة جوابها «لا»",
+     "size": 80,
+     "accent": false,
+     "small": true
+    },
+    {
+     "text": "نعيده صح",
+     "size": 130,
+     "accent": true,
+     "small": false
+    }
+   ]
+  }
+ ],
+ "end": {
+  "theme": "work",
+  "series": "شغلي",
+  "title": [
+   "نعيده",
+   "صح"
+  ],
+  "ep": "",
+  "cta": "أرسل «فكرة» بالخاص",
+  "name": "علي الكندري · ALI ALKANDIRY",
+  "dur": 3.6
+ }
+}
